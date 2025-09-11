@@ -108,12 +108,36 @@ export interface VoltAgentRecipe {
 
 export interface RecipeVariation {
   variationName: string
+  originalRecipe: string
   modificationType: string
   ingredients: {
     name: string
     amount: string
     unit: string
-    substitution?: boolean
+    substitution?: string
+  }[]
+  instructions: string[]
+  substitutions: {
+    original: string
+    replacement: string
+    reason: string
+  }[]
+  nutritionalBenefits?: string
+  difficulty: string
+  cookingTime: number
+  cuisine: string
+}
+
+// 実際のAPIレスポンスに対応した新しい型
+export interface APIVariationResponse {
+  variationName: string
+  originalRecipe: string
+  modificationType: string
+  ingredients: {
+    name: string
+    amount: string
+    unit: string
+    substitution?: string
   }[]
   instructions: string[]
   substitutions: {
@@ -164,7 +188,11 @@ export interface VoltAgentResponse {
       steps: {
         content: {
           type: string
-          text: string
+          text?: string
+          toolCallId?: string
+          toolName?: string
+          input?: any
+          output?: any
           providerMetadata?: any
         }[]
         finishReason: string
@@ -177,6 +205,7 @@ export interface VoltAgentResponse {
         }
         warnings: any[]
         request: any
+        response?: any
       }[]
     }
     text: string

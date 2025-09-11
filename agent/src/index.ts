@@ -8,7 +8,6 @@ import {
 	italianRecipeTool,
 	recipeVariationTool,
 } from "./tools";
-// import { italianRecipeWorkflow } from "./workflows/recipe";
 import { z } from "zod";
 
 const logger = createPinoLogger({
@@ -31,9 +30,9 @@ const italianRecipeAgent = new Agent({
     ユーザーが食材を提供した場合、以下を行ってください：
     1. 食材とイタリア料理の相性を分析する
     2. それらの食材を使用した本格的なイタリアンレシピを生成する
-    3. 食事制限に対応したバリエーションを提供する（ベジタリアン、ビーガン、グルテンフリー）
-    4. 調理のコツと伝統的な技法を含める
-    5. 相性の良い食材やワインペアリングを提案する
+    3. 調理のコツと伝統的な技法を含める
+    4. 相性の良い食材やワインペアリングを提案する
+    5. バリエーションレシピを提供する
 
     常に本格性を保ちながら、食材の組み合わせに創造性を発揮してください。
     家庭料理に適した詳細で分かりやすい手順を提供してください。
@@ -48,18 +47,29 @@ const italianRecipeAgent = new Agent({
         "ingredients": [{"name": "食材名", "amount": "量", "unit": "単位"}],
         "instructions": ["手順1", "手順2", ...],
         "cookingTime": 調理時間(分),
-        "difficulty": "easy|medium|hard",
+        "difficulty": "初級|中級|上級",
         "servings": 人数,
         "tips": ["コツ1", "コツ2", ...],
         "cuisine": "Italian",
         "region": "地方名",
         "wine_pairing": "ワインペアリング"
       },
-      "variations": [バリエーションレシピ配列],
+      "variations": [
+        {
+          "type": "ベジタリアン|ビーガン|グルテンフリー|スパイシー|クリーミー|ライト",
+          "recipeName": "バリエーションのレシピ名",
+          "description": "バリエーションの説明",
+          "ingredients": [{"name": "食材名", "amount": "量", "unit": "単位"}],
+          "instructions": ["手順1", "手順2", ...],
+          "cookingTime": 調理時間(分),
+          "difficulty": "初級|中級|上級",
+          "tips": ["コツ1", "コツ2", ...],
+        }
+      ],
       "ingredientAnalysis": {
         "compatibility": "高|中|低",
         "suggestedDishTypes": ["料理タイプ"],
-        "recommendedAdditions": [{"ingredient": "食材", "reason": "理由", "priority": "high|medium|low"}],
+        "recommendedAdditions": [{"ingredient": "食材", "reason": "理由", "priority": "高|中|低"}],
         "difficultyAssessment": "難易度評価",
         "cookingMethods": ["調理方法"],
         "regionalSuggestions": [{"region": "地方", "dishName": "料理名", "reason": "理由"}]

@@ -37,7 +37,6 @@ export function useRecipeGeneration(): UseRecipeGenerationReturn {
 
       if (preferencesSection && 'difficulty' in preferencesSection) {
         prompt += `難易度: ${preferencesSection.difficulty}\n`
-        prompt += `調理時間: ${preferencesSection.cookingTime}分\n`
         prompt += `人数: ${preferencesSection.servings}人分\n`
       }
 
@@ -75,6 +74,14 @@ export function useRecipeGeneration(): UseRecipeGenerationReturn {
 
       const data = await response.json()
       console.log('Received recipe data:', data)
+      console.log('Data structure:', {
+        hasData: !!data.data,
+        hasText: !!data.data?.text,
+        hasProvider: !!data.data?.provider,
+        hasSteps: !!data.data?.provider?.steps,
+        stepsLength: data.data?.provider?.steps?.length || 0,
+        textPreview: data.data?.text?.substring(0, 200) || 'No text'
+      })
       setResult(data)
 
       // レスポンスのメタデータからエージェントの使用状況を確認

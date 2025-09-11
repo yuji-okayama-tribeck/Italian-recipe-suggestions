@@ -125,15 +125,15 @@ export const recipeVariationTool = createTool({
 
 		const variationPrompt = `
       以下のイタリアンレシピの${variationTypeJa}バージョンを作成してください：${baseRecipe}
-      
+
       ${additionalIngredients.length > 0 ? `追加で含める食材：${additionalIngredients.join("、")}` : ""}
-      
+
       要件：
       - イタリア料理の本格性を維持する
       - オリジナルからの変更点を明確に説明する
       - バリエーションが${variationTypeJa}の要件を満たすことを確認する
       - 代替食材の説明を提供する
-      
+
       必須：レスポンスはJSON形式で以下の構造に従ってください：
       {
         "variationName": "バリエーション名",

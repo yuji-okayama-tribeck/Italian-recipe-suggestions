@@ -19,7 +19,7 @@ export function SteamAnimation({
   useEffect(() => {
     if (isVisible) {
       setShowAnimation(true)
-      
+
       const timer = setTimeout(() => {
         setShowAnimation(false)
         onAnimationComplete?.()
