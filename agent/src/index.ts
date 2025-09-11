@@ -39,12 +39,21 @@ const italianRecipeAgent = new Agent({
 
     入力されたレシピリクエストを解析し、JSON形式でレシピを返してください。
 
+    重要：単位は必ず日本語で表記してください：
+    - 大さじ (tbsp → 大さじ)
+    - 小さじ (tsp → 小さじ)
+    - カップ (cup → カップ)
+    - グラム (g)
+    - ミリリットル (ml)
+    - リットル (L)
+    - 個、本、枚、かけ、適量など
+
     レスポンス形式：
     {
       "mainRecipe": {
         "recipeName": "レシピ名",
         "description": "レシピの説明",
-        "ingredients": [{"name": "食材名", "amount": "量", "unit": "単位"}],
+        "ingredients": [{"name": "食材名", "amount": "量", "unit": "日本語単位"}],
         "instructions": ["手順1", "手順2", ...],
         "cookingTime": 調理時間(分),
         "difficulty": "初級|中級|上級",
@@ -59,7 +68,7 @@ const italianRecipeAgent = new Agent({
           "type": "ベジタリアン|ビーガン|グルテンフリー|スパイシー|クリーミー|ライト",
           "recipeName": "バリエーションのレシピ名",
           "description": "バリエーションの説明",
-          "ingredients": [{"name": "食材名", "amount": "量", "unit": "単位"}],
+          "ingredients": [{"name": "食材名", "amount": "量", "unit": "日本語単位", "substitution": true|false}],
           "instructions": ["手順1", "手順2", ...],
           "cookingTime": 調理時間(分),
           "difficulty": "初級|中級|上級",
