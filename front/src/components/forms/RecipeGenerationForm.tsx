@@ -357,19 +357,79 @@ export function RecipeGenerationForm({ onBack, onRecipeGenerated }: RecipeGenera
           {!isVariationResponse(recipeData) && displayRecipe.variations && displayRecipe.variations.length > 0 && (
             <div className="bg-gray-50 rounded-lg p-6">
               <h3 className="text-lg font-bold mb-4">アレンジレシピ</h3>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {displayRecipe.variations.map((variation: any, index: number) => (
-                  <div key={index} className="bg-white rounded p-4">
-                    <h4 className="font-semibold text-italian-green mb-2">
+                  <div key={index} className="bg-white rounded-lg p-6 border">
+                    <h4 className="text-xl font-bold text-italian-green mb-2">
                       {variation.variationName}
                     </h4>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-gray-600 mb-4">
                       タイプ: {variation.modificationType}
                     </p>
 
+                    {/* 材料 */}
+                    {variation.ingredients && variation.ingredients.length > 0 && (
+                      <div className="mb-6">
+                        <h5 className="font-semibold mb-3">材料 ({variation.servings || 2}人分)</h5>
+                        <div className="grid md:grid-cols-2 gap-2">
+                          {variation.ingredients.map((ingredient: any, ingredientIndex: number) => (
+                            <div key={ingredientIndex} className="flex justify-between py-1">
+                              <span className="text-gray-700">{ingredient.name}</span>
+                              <span className="font-medium">
+                                {ingredient.amount} {ingredient.unit}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 作り方 */}
+                    {variation.instructions && variation.instructions.length > 0 && (
+                      <div className="mb-6">
+                        <h5 className="font-semibold mb-3">作り方</h5>
+                        <ol className="space-y-2">
+                          {variation.instructions.map((step: string, stepIndex: number) => (
+                            <li key={stepIndex} className="text-sm text-gray-700 leading-relaxed">
+                              {step}
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+
+                    {/* 調理情報 */}
+                    <div className="mb-4 pt-4 border-t">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h6 className="font-semibold mb-2">調理情報</h6>
+                          <p className="text-sm text-gray-600">
+                            {variation.cookingTime && (
+                              <>調理時間: {variation.cookingTime}分<br /></>
+                            )}
+                            {variation.difficulty && (
+                              <>難易度: {variation.difficulty}<br /></>
+                            )}
+                            {variation.cuisine && (
+                              <>料理: {variation.cuisine}</>
+                            )}
+                          </p>
+                        </div>
+
+                        {/* 栄養面での利点 */}
+                        {variation.nutritionalBenefits && (
+                          <div>
+                            <h6 className="font-semibold mb-2">栄養面での利点</h6>
+                            <p className="text-sm text-gray-600">{variation.nutritionalBenefits}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* 食材の変更点（従来の表示も残す） */}
                     {variation.substitutions && variation.substitutions.length > 0 && (
-                      <div>
-                        <h5 className="font-medium mb-1">食材の変更:</h5>
+                      <div className="pt-4 border-t">
+                        <h6 className="font-semibold mb-2">食材の変更:</h6>
                         <ul className="text-sm space-y-1">
                           {variation.substitutions.map((sub: any, subIndex: number) => (
                             <li key={subIndex} className="text-gray-600">
