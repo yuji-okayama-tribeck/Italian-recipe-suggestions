@@ -6,82 +6,50 @@ import { z } from "zod";
  */
 export const recipeVariationGenerationTool = createTool({
 	name: "recipeVariationGenerationTool",
-	description: "既存のイタリアンレシピのバリエーションを生成する",
+	description: "既存のイタリアンレシピのバリエーションを生成します。",
 	parameters: z.object({
-		baseRecipe: z.string().describe("ベースとなるレシピ名または説明"),
-		variationType: z
-			.enum(["vegetarian", "vegan", "gluten-free", "spicy", "creamy", "light"])
-			.describe("作成するバリエーションの種類"),
-		additionalIngredients: z
-			.array(z.string())
-			.optional()
-			.describe("追加で組み込む食材"),
+		baseRecipe: z.string().describe("ベースとなるレシピ"),
+		variationTypeList: z.array(z.string()).describe("生成したいバリエーションのタイプ"),
 	}),
-	execute: async ({
-		baseRecipe,
-		variationType,
-		additionalIngredients = [],
-	}) => {
-		const variationTypeJa = {
-			vegetarian: "ベジタリアン",
-			vegan: "ビーガン",
-			"gluten-free": "グルテンフリー",
-			spicy: "スパイシー",
-			creamy: "クリーミー",
-			light: "ライト",
-		}[variationType];
+	execute: async ({ baseRecipe, variationTypeList }) => {
+		const arengeRecipe = `
+		以下のベースレシピをもとに、指定されたバリエーションタイプごとに異なるイタリアンレシピを生成してください。
+		各バリエーションタイプに対して1つずつ、合計${variationTypeList.length}個のレシピバリエーションを生成してください。
 
-		const variationPrompt = `
-      以下のイタリアンレシピの${variationTypeJa}バージョンを作成してください：${baseRecipe}
+		ベースレシピ: ${baseRecipe}
+		バリエーションタイプ: ${variationTypeList.join(", ")}
 
-      ${additionalIngredients.length > 0 ? `追加で含める食材：${additionalIngredients.join("、")}` : ""}
+		# 出力フォーマット
+		JSONオブジェクトの配列で返却してください：
+		[
+		  ${variationTypeList.map((variationType) => `{
+		    "variationName": "バリエーション名",
+		    "originalRecipe": "オリジナルレシピ名",
+		    "modificationType": "${variationType}",
+		    "ingredients": [{"name": "食材名", "amount": "分量", "unit": "日本語単位", "substitution": "代替理由（もしあれば）"}],
+		    "instructions": ["変更された手順1", "変更された手順2"],
+		    "substitutions": [{"original": "元の食材", "replacement": "代替食材", "reason": "理由"}],
+		    "nutritionalBenefits": "栄養面での利点（該当する場合）",
+		    "difficulty": "難易度",
+		    "cookingTime": 調理時間(分),
+		    "cuisine": "Italian",
+		    "metadata": {
+		      "baseRecipe": "${baseRecipe}",
+		      "variationType": "${variationType}",
+		      "generatedAt": "${new Date().toISOString()}",
+		      "language": "ja",
+		      "format": "JSON"
+		    }
+		  }`).join(',\n  ')}
+		]
 
-      要件：
-      - イタリア料理の本格性を維持する
-      - オリジナルからの変更点を明確に説明する
-      - バリエーションが${variationTypeJa}の要件を満たすことを確認する
-      - 代替食材の説明を提供する
+		# 厳守事項
+		- 代替食材の根拠と、オリジナルからの差分を明確に示してください。
+		- 各バリエーションタイプに特化した変更を行ってください。
+		- 必ずJSONオブジェクトの配列形式で返却してください。
+		- 各バリエーションは異なる特徴を持つようにしてください。
+		`;
 
-      重要：単位は必ず日本語で表記してください：
-      - 大さじ (tbsp → 大さじ)
-      - 小さじ (tsp → 小さじ)
-      - カップ (cup → カップ)
-      - グラム (g)
-      - ミリリットル (ml)
-      - リットル (L)
-      - 個、本、枚、かけ、適量など
-
-      英語の単位（tbsp、tsp、cup、oz、lb等）は使用せず、必ず日本語に変換してください。
-
-      必須：レスポンスはJSON形式で以下の構造に従ってください：
-      {
-        "variationName": "バリエーション名",
-        "originalRecipe": "オリジナルレシピ名",
-        "modificationType": "${variationTypeJa}",
-        "ingredients": [{"name": "食材名", "amount": "分量", "unit": "日本語単位", "substitution": "代替理由（もしあれば）"}],
-        "instructions": ["変更された手順1", "変更された手順2", ...],
-        "substitutions": [{"original": "元の食材", "replacement": "代替食材", "reason": "理由"}],
-        "nutritionalBenefits": "栄養面での利点（該当する場合）",
-        "difficulty": "難易度",
-        "cookingTime": 調理時間（分）,
-        "cuisine": "Italian"
-      }
-    `;
-
-		return {
-			type: "recipe_variation_request",
-			prompt: variationPrompt,
-			input_data: {
-				baseRecipe,
-				variationType,
-				variationTypeJa,
-				additionalIngredients,
-			},
-			expected_format: "JSON",
-			message: `レシピバリエーションリクエストを準備しました：${baseRecipe}の${variationTypeJa}バージョン`,
-			instructions:
-				"AIモデルに上記のプロンプトを送信し、JSON形式でバリエーションレシピを生成してください",
-		};
-	},
+		return arengeRecipe;
+	}
 });
-

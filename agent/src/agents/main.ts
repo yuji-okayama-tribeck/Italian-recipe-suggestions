@@ -4,7 +4,6 @@ import { VercelAIProvider } from "@voltagent/vercel-ai";
 
 import { z } from "zod";
 
-import { IngredientAnalystAgent } from "./ingredientAnalyst";
 import { RecipeGenerationAgent } from "./recipeGeneration";
 import { RecipeVariationGenerationAgent } from "./recipeVariationGeneration";
 
@@ -18,16 +17,14 @@ export const BuonoKun = new Agent({
     以下の手順に従って、イタリアンおレシピ情報を提供します。
 
     # 手順
-    1.IngredientAnalystAgentを使用して食材分析を行います。
-    2.RecipeGenerationAgentを使用してレシピ生成を行います。
+    1.RecipeGenerationAgentを使用してレシピ生成を行います。
     3.RecipeVariationGenerationAgentを使用してレシピのバリエーションを生成します（必要に応じて）。
     4.最終的に、各ステップで生成されたJSONデータを統合し、ユーザーに提供します。
 
     # JSONフォーマット
     {
-      "ingredientAnalysis": { ... }, // IngredientAnalystAgentからのレスポンス
       "mainRecipe": { ... }, // RecipeGenerationAgentからのレスポンス
-      "variations": [ ... ], // RecipeVariationGenerationAgentからのレスポンス（もしあれば）
+      "variations": [ ... ], // RecipeVariationGenerationAgentからのレスポンス
       "metadata": {
         "generatedAt": "生成日時",
       }
@@ -41,5 +38,5 @@ export const BuonoKun = new Agent({
   }),
   llm: new VercelAIProvider(),
   model: openai("gpt-4o-mini"),
-  subAgents: [IngredientAnalystAgent, RecipeGenerationAgent, RecipeVariationGenerationAgent],
+  subAgents: [RecipeGenerationAgent, RecipeVariationGenerationAgent],
 });
