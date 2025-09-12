@@ -5,13 +5,13 @@ import { z } from "zod";
  * レシピ生成ツール
  */
 export const recipeGenerationTool = createTool({
-  name: "recipeGenerationTool",
-  description: "提供されたプロンプトからイタリアンレシピを生成する",
-  parameters: z.object({
-    prompt: z.string().describe("ユーザーからの入力プロンプト"),
-  }),
-  execute: async ({ prompt }) => {
-    const recipePrompt = `
+	name: "recipeGenerationTool",
+	description: "提供されたプロンプトからイタリアンレシピを生成する",
+	parameters: z.object({
+		prompt: z.string().describe("ユーザーからの入力プロンプト"),
+	}),
+	execute: async ({ prompt }) => {
+		const recipePrompt = `
       ${prompt}
 
       以下の条件でイタリアンレシピを生成してください：
@@ -88,17 +88,17 @@ export const recipeGenerationTool = createTool({
       }
     `;
 
-    return {
-      type: "recipe_generation_request",
-      prompt: recipePrompt,
-      input_data: {
-        user_prompt: prompt,
-      },
-      expected_format: "JSON",
-      message: `ユーザーのプロンプトに基づいたレシピ生成リクエストを準備しました`,
-      instructions:
-        "AIモデルに上記のプロンプトを送信し、JSON形式でレシピを生成してください",
-    };
-  },
+		return {
+			type: "recipe_generation_request",
+			prompt: recipePrompt,
+			input_data: {
+				user_prompt: prompt,
+			},
+			expected_format: "JSON",
+			message:
+				"ユーザーのプロンプトに基づいたレシピ生成リクエストを準備しました",
+			instructions:
+				"AIモデルに上記のプロンプトを送信し、JSON形式でレシピを生成してください",
+		};
+	},
 });
-

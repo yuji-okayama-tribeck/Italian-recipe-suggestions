@@ -1,5 +1,6 @@
 export { ingredientAnalysisTool } from "./ingredientAnalysisTool";
 export { recipeGenerationTool } from "./recipeGenerationTool";
-export { recipeVariationGenerationTool } from "./recipeVariationGenerationTool";
-
-
+export {
+	recipeVariationGenerationTool,
+	dataAggregationTool,
+} from "./recipeVariationGenerationTool";

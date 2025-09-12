@@ -5,13 +5,13 @@ import { z } from "zod";
  * 食材分析ツール
  */
 export const ingredientAnalysisTool = createTool({
-  name: "ingredientAnalysisTool",
-  description: "イタリア料理への食材の適性を分析し、組み合わせを提案する",
-  parameters: z.object({
-    ingredients: z.array(z.string()).describe("分析する食材"),
-  }),
-  execute: async ({ ingredients }) => {
-    const analysisPrompt = `
+	name: "ingredientAnalysisTool",
+	description: "イタリア料理への食材の適性を分析し、組み合わせを提案する",
+	parameters: z.object({
+		ingredients: z.array(z.string()).describe("分析する食材"),
+	}),
+	execute: async ({ ingredients }) => {
+		const analysisPrompt = `
       以下の食材についてイタリア料理への適性を分析してください：${ingredients.join("、")}
 
       以下を含む分析を提供してください：
@@ -57,25 +57,25 @@ export const ingredientAnalysisTool = createTool({
       }
     `;
 
-    return {
-      type: "ingredient_analysis_request",
-      prompt: analysisPrompt,
-      input_data: {
-        ingredients,
-        analysis: {
-          ingredientCount: ingredients.length,
-          complexity:
-            ingredients.length > 5
-              ? "高"
-              : ingredients.length > 3
-                ? "中"
-                : "低",
-        },
-      },
-      expected_format: "JSON",
-      message: `${ingredients.length}個の食材の分析リクエストを準備しました`,
-      instructions:
-        "AIモデルに上記のプロンプトを送信し、JSON形式で食材分析を生成してください",
-    };
-  },
+		return {
+			type: "ingredient_analysis_request",
+			prompt: analysisPrompt,
+			input_data: {
+				ingredients,
+				analysis: {
+					ingredientCount: ingredients.length,
+					complexity:
+						ingredients.length > 5
+							? "高"
+							: ingredients.length > 3
+								? "中"
+								: "低",
+				},
+			},
+			expected_format: "JSON",
+			message: `${ingredients.length}個の食材の分析リクエストを準備しました`,
+			instructions:
+				"AIモデルに上記のプロンプトを送信し、JSON形式で食材分析を生成してください",
+		};
+	},
 });
