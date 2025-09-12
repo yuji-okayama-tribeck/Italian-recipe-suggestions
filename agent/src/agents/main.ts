@@ -5,17 +5,17 @@ import { z } from "zod";
 
 import { ingredientAnalystAgent } from "./ingredientAnalyst";
 import { recipeGenerationAgent } from "./recipeGeneration";
-import { recipeVariationAgent } from "./recipeVariation";
+import { recipeVariationGenerationAgent } from "./recipeVariationGeneration";
 
 /**
  * Buonoくん
  */
-export const BuonoKun = new Agent({
-  name: "buono-kun",
+export const buonoKun = new Agent({
+  name: "buonoKun",
   instructions: `
     ユーザーのリクエストを理解し、必ず次の順序で対応してください：
 
-    **Step 1: 食材分析 
+    **Step 1: 食材分析
     - ユーザーが提示した食材、またはプロンプトから抽出した食材を分析
     - 食材のイタリア料理への適性、相性、地方ごとの使用法を評価
     - 分析結果を元に推奨する料理のカテゴリーを特定
@@ -38,5 +38,5 @@ export const BuonoKun = new Agent({
   }),
   llm: new VercelAIProvider(),
   model: openai("gpt-4o-mini"),
-  subAgents: [ingredientAnalystAgent, recipeGenerationAgent, recipeVariationAgent]
+  subAgents: [ingredientAnalystAgent, recipeGenerationAgent, recipeVariationGenerationAgent]
 });

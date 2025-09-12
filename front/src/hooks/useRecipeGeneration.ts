@@ -46,7 +46,7 @@ export function useRecipeGeneration(): UseRecipeGenerationReturn {
 
       prompt += '\nこれらの条件でイタリア料理のレシピを教えてください。'
 
-      const response = await fetch('http://localhost:3141/agents/italian-recipe-chef/text',       {
+      const response = await fetch('http://localhost:3141/agents/buono-kun/text',       {
         method: "POST",
         headers: {
           accept: "application/json",

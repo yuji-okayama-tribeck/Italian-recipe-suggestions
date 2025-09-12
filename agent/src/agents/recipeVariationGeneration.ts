@@ -2,13 +2,13 @@ import { Agent } from "@voltagent/core";
 import { VercelAIProvider } from "@voltagent/vercel-ai";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
-import { recipeVariationTool } from "../tools";
+import { recipeVariationGenerationTool } from "../tools";
 
 /**
  * レシピのバリエーション生成
  */
-export const recipeVariationAgent = new Agent({
-  name: "recipeVariation",
+export const recipeVariationGenerationAgent = new Agent({
+  name: "recipeVariationGenerationAgent",
   instructions: `
     あなたはイタリアンレシピのバリエーション作成に特化しています。
     指定のスタイル（ベジタリアン、グルテンフリー等）に沿った変更案をJSONで返します。
@@ -21,5 +21,5 @@ export const recipeVariationAgent = new Agent({
   }),
   llm: new VercelAIProvider(),
   model: openai("gpt-4o-mini"),
-  tools: [recipeVariationTool],
+  tools: [recipeVariationGenerationTool],
 });

@@ -2,13 +2,13 @@ import { Agent } from "@voltagent/core";
 import { VercelAIProvider } from "@voltagent/vercel-ai";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
-import { recipeGenerationTool } from "../tools/recipe";
+import { recipeGenerationTool } from "../tools";
 
 /**
  * レシピ生成
  */
 export const recipeGenerationAgent = new Agent({
-  name: "recipeGenerate",
+  name: "recipeGenerationAgent",
   instructions: `
     あなたはイタリアンのレシピ生成に特化しています。
     与えられた条件から、本格的で家庭で再現可能なレシピをJSONで返します。

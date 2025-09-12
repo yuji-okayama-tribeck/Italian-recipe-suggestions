@@ -8,7 +8,7 @@ import { ingredientAnalysisTool } from "../tools";
  * 食材分析
  */
 export const ingredientAnalystAgent = new Agent({
-  name: "ingredientAnalyst",
+  name: "ingredientAnalystAgent",
   instructions: `
     あなたはイタリア料理の食材分析に特化しています。
     食材の相性、地方性、提案カテゴリをJSONで返します。
