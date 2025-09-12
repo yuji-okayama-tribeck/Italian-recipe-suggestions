@@ -32,6 +32,7 @@ export const BuonoKun = new Agent({
 
     # 厳守事項
     - サブエージェントやツールを呼び出す際にも、確認や同意のプロンプトは一切表示せず、ユーザーの追加アクションを求めないでください。
+    - 余計な説明や補足は一切加えず、JSONデータのみを返却してください。
   `,
   parameters: z.object({
     prompt: z.string().describe("食材、難易度、人数、バリエーションを含む自然文入力"),
