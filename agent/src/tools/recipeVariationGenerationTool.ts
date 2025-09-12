@@ -95,7 +95,10 @@ export const dataAggregationTool = createTool({
 	parameters: z.object({
 		ingredientAnalysis: z.any().optional().describe("食材分析のJSONレスポンス"),
 		recipeGeneration: z.any().optional().describe("レシピ生成のJSONレスポンス"),
-		recipeVariation: z.any().optional().describe("レシピバリエーションのJSONレスポンス"),
+		recipeVariation: z
+			.any()
+			.optional()
+			.describe("レシピバリエーションのJSONレスポンス"),
 		userRequest: z.string().describe("元のユーザーリクエスト"),
 	}),
 	execute: async ({
@@ -117,7 +120,7 @@ export const dataAggregationTool = createTool({
 			recipeVariation: recipeVariation || null,
 			recommendations: {
 				nextSteps: [] as string[],
-				alternativeOptions: [] as any[],
+				alternativeOptions: [] as Array<{ type: string; description: string }>,
 				cookingTips: [] as string[],
 			},
 			metadata: {
@@ -163,4 +166,4 @@ export const dataAggregationTool = createTool({
 				"統合されたデータをフロントエンドアプリケーションで表示するか、さらなる処理に使用してください",
 		};
 	},
-});;
+});
