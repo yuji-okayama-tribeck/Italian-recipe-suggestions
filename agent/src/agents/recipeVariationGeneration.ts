@@ -7,8 +7,8 @@ import { recipeVariationGenerationTool } from "../tools";
 /**
  * レシピのバリエーション生成
  */
-export const recipeVariationGenerationAgent = new Agent({
-  name: "recipeVariationGenerationAgent",
+export const RecipeVariationGenerationAgent = new Agent({
+  name: "recipe-variation-generation-agent",
   instructions: `
     あなたはイタリアンレシピのバリエーション作成に特化しています。
     指定のスタイル（ベジタリアン、グルテンフリー等）に沿った変更案をJSONで返します。

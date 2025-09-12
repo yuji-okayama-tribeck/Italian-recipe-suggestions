@@ -3,15 +3,15 @@ import { VercelAIProvider } from "@voltagent/vercel-ai";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 
-import { ingredientAnalystAgent } from "./ingredientAnalyst";
-import { recipeGenerationAgent } from "./recipeGeneration";
-import { recipeVariationGenerationAgent } from "./recipeVariationGeneration";
+import { IngredientAnalystAgent } from "./ingredientAnalyst";
+import { RecipeGenerationAgent } from "./recipeGeneration";
+import { RecipeVariationGenerationAgent } from "./recipeVariationGeneration";
 
 /**
  * Buonoくん
  */
-export const buonoKun = new Agent({
-  name: "buonoKun",
+export const BuonoKun = new Agent({
+  name: "buono-kun",
   instructions: `
     ユーザーのリクエストを理解し、必ず次の順序で対応してください：
 
@@ -35,5 +35,5 @@ export const buonoKun = new Agent({
   }),
   llm: new VercelAIProvider(),
   model: openai("gpt-4o-mini"),
-  subAgents: [ingredientAnalystAgent, recipeGenerationAgent, recipeVariationGenerationAgent]
+  subAgents: [IngredientAnalystAgent, RecipeGenerationAgent, RecipeVariationGenerationAgent]
 });
