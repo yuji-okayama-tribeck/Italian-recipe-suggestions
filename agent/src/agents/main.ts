@@ -1,11 +1,16 @@
 import { openai } from "@ai-sdk/openai";
-import { Agent } from "@voltagent/core";
-import { VercelAIProvider } from "@voltagent/vercel-ai";
+
+import { VoltAgent, Agent, Memory } from "@voltagent/core";
+import { LibSQLMemoryAdapter } from "@voltagent/libsql";
 
 import { z } from "zod";
 
 import { RecipeGenerationAgent } from "./recipeGeneration";
 import { RecipeVariationGenerationAgent } from "./recipeVariationGeneration";
+
+const memory = new Memory({
+  storage: new LibSQLMemoryAdapter({ url: "file:./.voltagent/memory.db" }),
+});
 
 /**
  * Buonoくん
@@ -44,10 +49,10 @@ export const BuonoKun = new Agent({
     - 余計な説明文は一切含めない
     - JSONの外側にテキストを含めない
   `,
-  parameters: z.object({
-    prompt: z.string().describe("食材、難易度、人数、バリエーションの要求を含む自然文入力。例: 'トマトとバジルでパスタを作りたいです。初心者向けで2人分、ヘルシーなバリエーションも教えてください'"),
-  }),
-  llm: new VercelAIProvider(),
+  // parameters: z.object({
+  //   prompt: z.string().describe("食材、難易度、人数、バリエーションの要求を含む自然文入力。例: 'トマトとバジルでパスタを作りたいです。初心者向けで2人分、ヘルシーなバリエーションも教えてください'"),
+  // }),
+  memory,
   model: openai("gpt-4o-mini"),
   subAgents: [RecipeGenerationAgent, RecipeVariationGenerationAgent],
 });

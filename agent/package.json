@@ -15,9 +15,11 @@
   "dependencies": {
     "@ai-sdk/openai": "^2.0.25",
     "@voltagent/cli": "^0.1.9",
-    "@voltagent/core": "^0.1.63",
-    "@voltagent/logger": "^0.1.0",
-    "@voltagent/vercel-ai": "^1.0.0",
+    "@voltagent/core": "^1.0.0",
+    "@voltagent/libsql": "^1.0.0",
+    "@voltagent/logger": "^1.0.0",
+    "@voltagent/server-hono": "^1.0.0",
+    "ai": "^5.0.41",
     "dotenv": "^16.4.7",
     "zod": "^3.25.76"
   },
