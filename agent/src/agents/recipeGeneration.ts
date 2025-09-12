@@ -8,14 +8,13 @@ import { recipeGenerationTool } from "../tools";
  * レシピ生成
  */
 export const RecipeGenerationAgent = new Agent({
-	name: "recipe-generation-agent",
-	instructions: `
+  name: "recipe-generation-agent",
+  instructions: `
     あなたはイタリアンのレシピ生成に特化しています。
-    **重要**: 必ずJSON形式でレスポンスしてください。Markdownや通常のテキスト形式は使用しないでください。
-    
-    与えられた条件から、本格的で家庭で再現可能なレシピを必ず以下のJSON構造で返します：
+    与えられた食材から、本格的で家庭で再現可能なレシピを作成してください。
+
+    # JSONフォーマット
     {
-      "mainRecipe": {
         "recipeName": "レシピ名",
         "description": "料理の説明",
         "ingredients": [{"name": "食材名", "amount": "分量", "unit": "日本語単位"}],
@@ -27,35 +26,15 @@ export const RecipeGenerationAgent = new Agent({
         "cuisine": "Italian",
         "region": "イタリアの地方（もしあれば）",
         "winePairing": "おすすめワイン"
-      },
-      "variations": [
-        {
-          "variationName": "バリエーション名",
-          "modificationType": "バリエーションタイプ",
-          "ingredients": [{"name": "食材名", "amount": "分量", "unit": "日本語単位", "substitution": false}],
-          "instructions": ["手順1", "手順2"],
-          "substitutions": [{"original": "元の食材", "replacement": "代替食材", "reason": "理由"}],
-          "nutritionalBenefits": "栄養面での利点",
-          "difficulty": "難易度",
-          "cookingTime": 調理時間(分),
-          "cuisine": "Italian"
-        }
-      ],
-      "metadata": {
-        "generatedAt": "生成日時",
-        "language": "ja",
-        "format": "JSON",
-        "workflowVersion": "1.0"
-      }
     }
-    
-    単位は日本語表記に統一（大さじ、小さじ、カップ、g、ml等）し、手順は具体的・簡潔にしてください。
-    必ず上記のJSON構造でレスポンスしてください。
+
+    # 厳守事項
+    - 単位は日本語表記に統一（大さじ、小さじ、カップ、g、ml等）し、手順は具体的・簡潔にしてください。
   `,
-	parameters: z.object({
-		prompt: z.string().describe("ユーザーからの入力プロンプト"),
-	}),
-	llm: new VercelAIProvider(),
-	model: openai("gpt-4o-mini"),
-	tools: [recipeGenerationTool],
+  parameters: z.object({
+    ingredients: z.array(z.string()).describe("食材"),
+  }),
+  llm: new VercelAIProvider(),
+  model: openai("gpt-4o-mini"),
+  tools: [recipeGenerationTool],
 });

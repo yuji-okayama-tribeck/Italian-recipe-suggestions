@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import type { NewRecipeRequest, VoltAgentResponse } from '@/types'
+import type { NewRecipeRequest, VoltAgentResponse, RecipeVariationType } from '@/types'
+import { VARIATION_NAMES } from '@/types'
 
 interface UseRecipeGenerationReturn {
   generateRecipe: (request: NewRecipeRequest) => Promise<void>
@@ -41,7 +42,11 @@ export function useRecipeGeneration(): UseRecipeGenerationReturn {
       }
 
       if (variationsSection && 'includeVariations' in variationsSection && variationsSection.includeVariations) {
-        prompt += `バリエーション: ${variationsSection.requestedVariations.join(', ')}\n`
+        const japaneseVariations = variationsSection.requestedVariations.map(
+          (variation: RecipeVariationType) => VARIATION_NAMES[variation]
+        )
+
+        prompt += `バリエーション: ${japaneseVariations.join(', ')}\n`
       }
 
       prompt += '\nこれらの条件でイタリア料理のレシピを教えてください。'

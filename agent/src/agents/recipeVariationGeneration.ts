@@ -11,9 +11,9 @@ export const RecipeVariationGenerationAgent = new Agent({
 	name: "recipe-variation-generation-agent",
 	instructions: `
     あなたはイタリアンレシピのバリエーション作成に特化しています。
-    **重要**: 必ずJSON形式でレスポンスしてください。Markdownや通常のテキスト形式は使用しないでください。
-    
-    指定のスタイル（ベジタリアン、グルテンフリー等）に沿った変更案を必ず以下のJSON構造で返します：
+    与えられたオリジナルレシピを基に、指定されたバリエーションを作成してください。
+
+    # JSONフォーマット
     {
       "variationName": "バリエーション名",
       "originalRecipe": "オリジナルレシピ名",
@@ -33,15 +33,12 @@ export const RecipeVariationGenerationAgent = new Agent({
         "format": "JSON"
       }
     }
-    
-    代替食材の根拠と、オリジナルからの差分を明確に示し、必ず上記のJSON構造でレスポンスしてください。
+
+    # 厳守事項
+    - 代替食材の根拠と、オリジナルからの差分を明確に示してください。
   `,
 	parameters: z.object({
-		baseRecipe: z.string().describe("ベースとなるレシピ名または説明"),
-		variationType: z
-			.enum(["vegetarian", "vegan", "gluten-free", "spicy", "creamy", "light"])
-			.describe("バリエーション種類"),
-		additionalIngredients: z.array(z.string()).optional().describe("追加食材"),
+		baseRecipe: z.string().describe("オリジナルレシピ"),
 	}),
 	llm: new VercelAIProvider(),
 	model: openai("gpt-4o-mini"),
